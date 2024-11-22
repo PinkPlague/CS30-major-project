@@ -4,6 +4,7 @@
 let playerSprite;
 const PLAYER_SPEED = 5;
 let playerVars;
+let lastDash;
 
 
 function setup() {
@@ -11,6 +12,7 @@ function setup() {
 
   playerVars = {
     lives: 5,
+    speed: PLAYER_SPEED,
     hit: false,
     invincible: false,
     iFrameTimer: 0,
@@ -35,24 +37,37 @@ function setup() {
 function draw() {
   background(220);
 
+  movement();
+  border();
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+
+function movement() {
   // movement
 	if (kb.pressing("right")) {
-    playerSprite.vel.x = PLAYER_SPEED;
+  playerSprite.vel.x = playerVars.speed;
 	playerSprite.vel.y = 0;
   } 
 	if (kb.pressing("left")) {
-    playerSprite.vel.x = -PLAYER_SPEED;
+  playerSprite.vel.x = -playerVars.speed;
 	playerSprite.vel.y = 0;
   } 
 	if (kb.pressing("up")) {
-    playerSprite.vel.y = -PLAYER_SPEED;
+  playerSprite.vel.y = -playerVars.speed;
   } 
 	if (kb.pressing("down")) {
-    playerSprite.vel.y = PLAYER_SPEED;
+  playerSprite.vel.y = playerVars.speed;
   } 
-	if (!kb.pressing("right")&&!kb.pressing("left")&&!kb.pressing("up")&&!kb.pressing("down")) {
+	if (!kb.pressing("right")&&!kb.pressing("left")&&!kb.pressing("down")&&!kb.pressing("up")) {
 	playerSprite.vel.x = 0;
 	playerSprite.vel.y = 0;
+  }
+  if (kb.pressing("right")&&kb.pressing("left")&&kb.pressing("down")&&kb.pressing("up")) {
+  playerSprite.vel.x = 0;
+  playerSprite.vel.y = 0;
   }
   if (kb.pressing("right")&&kb.pressing("left")) {
 	playerSprite.vel.x = 0;
@@ -60,29 +75,29 @@ function draw() {
   if (kb.pressing("up")&&kb.pressing("down")) {
 	playerSprite.vel.y = 0;
   }
-  
+
+  //DASH
   if (kb.presses("space")) {
-  
+  lastDash = millis();
+  playerVars.speed *= 2;
 	}
 
-  if (playerSprite.x < 15) {
-    playerSprite.x = 15;
-  }
-  
-  if (playerSprite.x > 6000) {
-    playerSprite.x = 20;
-  }
-  
-  if (playerSprite.y < 20){
-    playerSprite.y = 20;
-  }
-
-  if (playerSprite.y > height-15){
-    playerSprite.y = height-15;
-  }
-  
 }
 
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
+function border() {
+  if (playerSprite.x < 15) {
+    playerSprite.x = 15;
+    }
+    
+    if (playerSprite.x > width-15) {
+    playerSprite.x = width-15;
+    }
+    
+    if (playerSprite.y < 15){
+    playerSprite.y = 15;
+    }
+  
+    if (playerSprite.y > height-15){
+    playerSprite.y = height-15;
+    }
 }
