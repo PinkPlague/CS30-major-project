@@ -6,7 +6,7 @@ const PLAYER_SPEED = 5;
 let playerVars;
 let lastDash;
 let state = "startup"
-
+let playerLoaded = false;
 
 
 function setup() {
@@ -28,32 +28,19 @@ function setup() {
     nonStretched: 30,
     colour: color(0, 254, 255),
   };
-
-  playerSprite = new Sprite(width/2, height/2, 30, 30);
-  playerSprite.color = playerVars.colour;
-  playerSprite.rotationLock = false;
-  playerSprite.vel.x = 0;
-  playerSprite.vel.y = 0;
-  
-  // create obsticles group
-  //squares
-  squares = new Group();
-  squares.colour = color(252, 31, 109)
-  //circles
-  circles = new Group();
-  circles.colour = color(252, 31, 109)
-
-  //overlaps
-  playerSprite.overlaps(squares, )
-  playerSprite.overlaps(circles, )
 }
 
 function draw() {
   if (state === "startup") {
     startupMenu();
   }
-
-
+  else if (state === "mainMenu") {
+    mainMenu();
+  }
+  else if (state === "levelLoaded"&&playerLoaded===false) {
+    levelLoad();
+    playerLoaded=true;
+  }
   // background(0);
 
   // movement();
@@ -61,7 +48,16 @@ function draw() {
   
 }
 
-
+function mousePressed() {
+  if (state === "startup") {
+    state = "mainMenu"
+  }
+  if (state === "mainMenu") {
+    if (mouseX >= width/2-100&& mouseX <= width/2+100&& mouseY >= height/2&& mouseY <= height/2+50) {
+      state = "levelLoaded"
+    }
+  }
+}
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
@@ -135,6 +131,42 @@ function border() {
     }
 }
 
+function reset() {
+  squares.removeAll();
+  circles.removeAll();
+}
 function startupMenu() {
   background(30, 5, 20);
+  textSize(50);
+  fill(255, 0, 67)
+  text("Click To Load Main Menu", width/2-300, height/2);
+}
+function mainMenu() {
+  background(30, 5, 20);
+  fill(83, 4, 28)
+  stroke(255, 0, 85)
+  strokeWeight(10)
+  rect(width/2-100,height/2, 200, 50, 50)
+
+}
+function levelLoad(levelId) {
+  background(30, 5, 20);
+
+  playerSprite = new Sprite(width/2, height/2, 30, 30);
+  playerSprite.color = playerVars.colour;
+  playerSprite.rotationLock = false;
+  playerSprite.vel.x = 0;
+  playerSprite.vel.y = 0;
+  
+  // create obsticles group
+  //squares
+  squares = new Group();
+  squares.colour = color(252, 31, 109)
+  //circles
+  circles = new Group();
+  circles.colour = color(252, 31, 109)
+
+  //overlaps
+  playerSprite.overlaps(squares, )
+  playerSprite.overlaps(circles, )
 }
