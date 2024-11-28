@@ -1,5 +1,6 @@
 
 
+let katamari, arcanoid;
 
 let playerSprite, squares, circles;
 const PLAYER_SPEED = 5;
@@ -7,6 +8,14 @@ let playerVars;
 let lastDash;
 let state = "startup"
 let playerLoaded = false;
+
+let levelStartTimer;
+
+
+function preload() {
+  katamari = loadSound('assets/songfiles/femtanyl_-_KATAMARI.mp3')
+  arcanoid = loadSound('assets/songfiles/Cyclone_-_Arcanoid.mp3')
+}
 
 
 function setup() {
@@ -18,6 +27,7 @@ function setup() {
     hit: false,
     invincible: false,
     iFrameTimer: 0,
+    isDashing: false,
     dashTimer: 0,
     dashCooldown: 300,
     dashMultplier: 3.5,
@@ -28,23 +38,28 @@ function setup() {
     nonStretched: 30,
     colour: color(0, 254, 255),
   };
+
+  obsticals();
 }
 
 function draw() {
+
+  rectMode(CENTER);
+
   if (state === "startup") {
     startupMenu();
   }
   else if (state === "mainMenu") {
     mainMenu();
   }
-  else if (state === "levelLoaded"&&playerLoaded===false) {
-    levelLoad();
-    playerLoaded=true;
+  else if (state === "levelLoaded") {
+    background(30, 5, 20);
+    playerLoad();
+    movement();
+    border();
   }
-  // background(0);
 
-  // movement();
-  // border();
+  
   
 }
 
@@ -53,7 +68,7 @@ function mousePressed() {
     state = "mainMenu"
   }
   if (state === "mainMenu") {
-    if (mouseX >= width/2-100&& mouseX <= width/2+100&& mouseY >= height/2&& mouseY <= height/2+50) {
+    if (mouseX >= width/2-100&& mouseX <= width/2+100&& mouseY >= height/3*2-25&& mouseY <= height/3*2+25) {
       state = "levelLoaded"
     }
   }
@@ -74,7 +89,7 @@ function movement() {
   playerSprite.vel.x = -playerVars.speed;
 	playerSprite.vel.y = 0;
   playerSprite.height = playerVars.stretchedMin;
-  } 
+  }
 	if (kb.pressing("up")) {
   playerSprite.vel.y = -playerVars.speed;
   playerSprite.width = playerVars.stretchedMin;
@@ -103,13 +118,17 @@ function movement() {
 
   //DASH
   if (kb.presses("space")) {
+  if (!playerVars.isDashing) {
   lastDash = millis();
   playerVars.speed *= playerVars.dashMultplier;
   playerVars.invincible = true;
+  playerVars.isDashing = true;
+  }
 	}
   if (millis() > lastDash + playerVars.dashCooldown) {
-    playerVars.speed = PLAYER_SPEED;
-    playerVars.invincible = false;
+  playerVars.speed = PLAYER_SPEED;
+  playerVars.invincible = false;
+  playerVars.isDashing = false;
   } 
 }
 
@@ -134,6 +153,7 @@ function border() {
 function reset() {
   squares.removeAll();
   circles.removeAll();
+  playerSprite.removeAll();
 }
 function startupMenu() {
   background(30, 5, 20);
@@ -146,18 +166,27 @@ function mainMenu() {
   fill(83, 4, 28)
   stroke(255, 0, 85)
   strokeWeight(10)
-  rect(width/2-100,height/2, 200, 50, 50)
+  rect(width/2,height/3*2, 200, 50, 50)
 
 }
-function levelLoad(levelId) {
-  background(30, 5, 20);
+function playerLoad() {
+  if (!playerLoaded) {
+    noStroke();
+    //create sprite
+    playerSprite = new Sprite(width/2, height/2, 30, 30);
+    playerSprite.color = playerVars.colour;
+    playerSprite.rotationLock = false;
+    playerSprite.vel.x = 0;
+    playerSprite.vel.y = 0;
+    //overlaps
+    playerSprite.overlaps(squares, )
+    playerSprite.overlaps(circles, )
 
-  playerSprite = new Sprite(width/2, height/2, 30, 30);
-  playerSprite.color = playerVars.colour;
-  playerSprite.rotationLock = false;
-  playerSprite.vel.x = 0;
-  playerSprite.vel.y = 0;
-  
+
+    playerLoaded=true;
+  }
+}
+function obsticals() {
   // create obsticles group
   //squares
   squares = new Group();
@@ -165,8 +194,13 @@ function levelLoad(levelId) {
   //circles
   circles = new Group();
   circles.colour = color(252, 31, 109)
+}
+function loadLevel(levelId) {
+  background(30, 5, 20);
+}
 
-  //overlaps
-  playerSprite.overlaps(squares, )
-  playerSprite.overlaps(circles, )
+
+function level_Katamari() {
+  levelStartTimer = millis();
+
 }
