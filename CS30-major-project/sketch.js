@@ -7,7 +7,8 @@ const PLAYER_SPEED = 5;
 let playerVars;
 let lastDash;
 let state = "startup"
-let playerLoaded = false;
+let playerLoadedBool = false;
+let levelLoadedBool = false;
 
 let levelStartTimer;
 
@@ -39,6 +40,8 @@ function setup() {
     colour: color(0, 254, 255),
   };
 
+  
+
   obsticals();
 }
 
@@ -52,12 +55,15 @@ function draw() {
   else if (state === "mainMenu") {
     mainMenu();
   }
-  else if (state === "levelLoaded") {
+  else if (state === "levelLoaded -1") {
     background(30, 5, 20);
     playerLoad();
     movement();
     border();
+    loadLevel(-1);
+    hit();
   }
+  
 
   
   
@@ -69,10 +75,10 @@ function mousePressed() {
   }
   if (state === "mainMenu") {
     if (mouseX >= width/2-100&& mouseX <= width/2+100&& mouseY >= height/3*2-25&& mouseY <= height/3*2+25) {
-      state = "levelLoaded"
+      state = "levelLoaded -1"
     }
   }
-}
+} 
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
@@ -153,7 +159,7 @@ function border() {
 function reset() {
   squares.removeAll();
   circles.removeAll();
-  playerSprite.removeAll();
+  // playerSprite.removeAll();
 }
 function startupMenu() {
   background(30, 5, 20);
@@ -170,37 +176,66 @@ function mainMenu() {
 
 }
 function playerLoad() {
-  if (!playerLoaded) {
+  if (!playerLoadedBool) {
     noStroke();
     //create sprite
     playerSprite = new Sprite(width/2, height/2, 30, 30);
     playerSprite.color = playerVars.colour;
-    playerSprite.rotationLock = false;
+    playerSprite.rotationLock = true;
     playerSprite.vel.x = 0;
     playerSprite.vel.y = 0;
-    //overlaps
-    playerSprite.overlaps(squares, )
-    playerSprite.overlaps(circles, )
+    playerSprite.layer = 2;
 
-
-    playerLoaded=true;
+    playerLoadedBool = true;
   }
 }
 function obsticals() {
+  noStroke();
   // create obsticles group
   //squares
   squares = new Group();
-  squares.colour = color(252, 31, 109)
+  squares.colour = color(252, 31, 109);
+  squares.collider = "n";
+  squares.friction = 0;
+  squares.layer = 1;
   //circles
   circles = new Group();
-  circles.colour = color(252, 31, 109)
+  circles.colour = color(252, 31, 109);
+  circles.collider = "n";
+  circles.friction = 0;
+  circles.layer = 1;
 }
 function loadLevel(levelId) {
-  background(30, 5, 20);
+  if (!levelLoadedBool) {
+    background(30, 5, 20);
+    if (levelId === -1) {
+      level_test();
+    }
+    if (levelId === 1) {
+      level_Katamari();
+    }
+
+    levelLoadedBool = true;
+  }
 }
 
+function level_test() {
+  strokeWeight(0);
+  noStroke();
+  obsticals();
+  levelStartTimer = millis();
+
+  new squares.Sprite(400, 400, 50, 50)
+}
 
 function level_Katamari() {
   levelStartTimer = millis();
 
 }
+
+function hit() {
+  if (!playerVars.invincible&&(playerSprite.overlaps(squares)||playerSprite.overlaps(circles))) {
+    playerVars.lives--;
+  }
+}
+
