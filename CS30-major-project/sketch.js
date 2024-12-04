@@ -6,6 +6,7 @@ let playerSprite, squares, circles;
 const PLAYER_SPEED = 5;
 let playerVars;
 let lastDash;
+let lastHit;
 let state = "startup"
 let playerLoadedBool = false;
 let levelLoadedBool = false;
@@ -26,6 +27,7 @@ function setup() {
     lives: 5,
     speed: PLAYER_SPEED,
     hit: false,
+    hitCooldown: 200,
     invincible: false,
     iFrameTimer: 0,
     isDashing: false,
@@ -90,19 +92,23 @@ function movement() {
   playerSprite.vel.x = playerVars.speed;
 	playerSprite.vel.y = 0;
   playerSprite.height = playerVars.stretchedMin;
+  playerSprite.bearing = 90;
   } 
 	if (kb.pressing("left")) {
   playerSprite.vel.x = -playerVars.speed;
 	playerSprite.vel.y = 0;
   playerSprite.height = playerVars.stretchedMin;
+  playerSprite.bearing = 270;
   }
 	if (kb.pressing("up")) {
   playerSprite.vel.y = -playerVars.speed;
   playerSprite.width = playerVars.stretchedMin;
+  playerSprite.bearing = 0;
   } 
 	if (kb.pressing("down")) {
   playerSprite.vel.y = playerVars.speed;
   playerSprite.width = playerVars.stretchedMin;
+  playerSprite.bearing = 180;
   } 
 	if (!kb.pressing("right")&&!kb.pressing("left")&&!kb.pressing("down")&&!kb.pressing("up")) {
 	playerSprite.vel.x = 0;
@@ -236,6 +242,18 @@ function level_Katamari() {
 function hit() {
   if (!playerVars.invincible&&(playerSprite.overlaps(squares)||playerSprite.overlaps(circles))) {
     playerVars.lives--;
+    knockback();
   }
 }
 
+function knockback() {
+  if (!playerVars.hit) {
+    lastHit = millis();
+    playerVars.speed *= -3;
+    playerVars.hit = true;
+    }
+    if (millis() > lastHit + playerVars.hitCooldown) {
+    playerVars.speed = PLAYER_SPEED;
+    playerVars.hit = false;
+    } 
+}
