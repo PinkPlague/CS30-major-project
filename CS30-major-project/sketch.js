@@ -1,5 +1,3 @@
-
-
 let katamari, arcanoid;
 
 let playerSprite, squares, circles;
@@ -27,7 +25,7 @@ function setup() {
     lives: 5,
     speed: PLAYER_SPEED,
     hit: false,
-    hitCooldown: 200,
+    hitCooldown: 100,
     invincible: false,
     iFrameTimer: 0,
     isDashing: false,
@@ -88,27 +86,27 @@ function windowResized() {
 
 function movement() {
   // movement
-	if (kb.pressing("right")) {
+	if (kb.pressing("right")&&!playerVars.hit) {
   playerSprite.vel.x = playerVars.speed;
 	playerSprite.vel.y = 0;
   playerSprite.height = playerVars.stretchedMin;
-  playerSprite.bearing = 90;
+  playerSprite.bearing = 'right';
   } 
-	if (kb.pressing("left")) {
+	if (kb.pressing("left")&&!playerVars.hit) {
   playerSprite.vel.x = -playerVars.speed;
 	playerSprite.vel.y = 0;
   playerSprite.height = playerVars.stretchedMin;
-  playerSprite.bearing = 270;
+  playerSprite.bearing = 'left';
   }
-	if (kb.pressing("up")) {
+	if (kb.pressing("up")&&!playerVars.hit) {
   playerSprite.vel.y = -playerVars.speed;
   playerSprite.width = playerVars.stretchedMin;
-  playerSprite.bearing = 0;
+  playerSprite.bearing = 'up';
   } 
-	if (kb.pressing("down")) {
+	if (kb.pressing("down")&&!playerVars.hit) {
   playerSprite.vel.y = playerVars.speed;
   playerSprite.width = playerVars.stretchedMin;
-  playerSprite.bearing = 180;
+  playerSprite.bearing = 'down';
   } 
 	if (!kb.pressing("right")&&!kb.pressing("left")&&!kb.pressing("down")&&!kb.pressing("up")) {
 	playerSprite.vel.x = 0;
@@ -242,18 +240,28 @@ function level_Katamari() {
 function hit() {
   if (!playerVars.invincible&&(playerSprite.overlaps(squares)||playerSprite.overlaps(circles))) {
     playerVars.lives--;
-    knockback();
-  }
-}
-
-function knockback() {
-  if (!playerVars.hit) {
-    lastHit = millis();
-    playerVars.speed *= -3;
-    playerVars.hit = true;
+    if (!playerVars.hit) {
+      lastHit = millis();
+      playerVars.hit = true;
+      
+      if (playerSprite.bearing === 'up') {
+        playerSprite.vel.y += 30;
+      }
+      if (playerSprite.bearing === 'down') {
+        playerSprite.vel.y -= 30;
+      }
+      if (playerSprite.bearing === 'right') {
+        playerSprite.vel.x -= 30;
+      }
+      if (playerSprite.bearing === 'left') {
+        playerSprite.vel.x += 30;
+      }
     }
-    if (millis() > lastHit + playerVars.hitCooldown) {
+  }
+
+  //knockback
+  if (millis() > lastHit + playerVars.hitCooldown) {
     playerVars.speed = PLAYER_SPEED;
     playerVars.hit = false;
-    } 
+  } 
 }
