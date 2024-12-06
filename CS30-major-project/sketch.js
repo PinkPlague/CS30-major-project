@@ -8,6 +8,7 @@ let lastHit;
 let state = "startup"
 let playerLoadedBool = false;
 let levelLoadedBool = false;
+let obsticalVars;
 
 let levelStartTimer;
 
@@ -40,6 +41,11 @@ function setup() {
     colour: color(0, 254, 255),
   };
 
+  obsticalVars = {
+    defaultColour: color(252, 31, 109),
+    spawnColour: color(255, 255, 255),
+  };
+
   
 
   obsticals();
@@ -62,6 +68,7 @@ function draw() {
     border();
     loadLevel(-1);
     hit();
+    spawnObsticalColourChange();
   }
   
 
@@ -198,17 +205,24 @@ function obsticals() {
   // create obsticles group
   //squares
   squares = new Group();
-  squares.colour = color(252, 31, 109);
+  squares.colour = obsticalVars.spawnColour;
   squares.collider = "n";
   squares.friction = 0;
   squares.layer = 1;
   //circles
   circles = new Group();
-  circles.colour = color(252, 31, 109);
+  circles.colour = obsticalVars.spawnColour;
   circles.collider = "n";
   circles.friction = 0;
   circles.layer = 1;
 }
+
+async function spawnObsticalColourChange() {
+  await sleep(1000)
+  squares.colour = lerpColor(squares.colour, obsticalVars.defaultColour, 0.15)
+  circles.colour = lerpColor(circles.colour, obsticalVars.defaultColour, 0.15)
+}
+
 function loadLevel(levelId) {
   if (!levelLoadedBool) {
     background(30, 5, 20);
@@ -233,7 +247,8 @@ function level_test() {
 }
 
 function level_Katamari() {
-  levelStartTimer = millis();
+  levelStartTimer = millis(); 
+  katamari.play();
 
 }
 
@@ -261,7 +276,16 @@ function hit() {
 
   //knockback
   if (millis() > lastHit + playerVars.hitCooldown) {
-    playerVars.speed = PLAYER_SPEED;
     playerVars.hit = false;
   } 
+}
+
+
+
+
+function sleep(millisecondsDuration)
+{
+  return new Promise((resolve) => {
+    setTimeout(resolve, millisecondsDuration);
+  })
 }
