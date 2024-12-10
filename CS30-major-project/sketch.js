@@ -1,6 +1,6 @@
 let katamari, arcanoid;
 
-let playerSprite, squares, circles;
+let playerSprite, squares, circles, textBoxes;
 const PLAYER_SPEED = 5;
 let playerVars;
 let lastDash;
@@ -14,8 +14,9 @@ let levelStartTimer;
 
 
 function preload() {
-  katamari = loadSound('assets/songfiles/femtanyl_-_KATAMARI.mp3')
-  arcanoid = loadSound('assets/songfiles/Cyclone_-_Arcanoid.mp3')
+  katamari = loadSound('assets/songfiles/femtanyl_-_KATAMARI.mp3');
+  arcanoid = loadSound('assets/songfiles/Cyclone_-_Arcanoid.mp3');
+  funFunFunDayo = loadSound('assets/songfiles/Fun_Fun_Fun_dayo_-_Lucky_star.mp3');
 }
 
 
@@ -217,10 +218,18 @@ function obsticals() {
   circles.layer = 1;
 }
 
+function textBoxesFunc() {
+  textBoxes = new Group();
+  textBoxes.colour = color(252, 31, 109);
+  textBoxes.layer = 1;
+  textBoxes.textSize = 40;
+  textBoxes.collider = 'none';
+}
+
 async function spawnObsticalColourChange() {
-  await sleep(1000)
-  squares.colour = lerpColor(squares.colour, obsticalVars.defaultColour, 0.15)
-  circles.colour = lerpColor(circles.colour, obsticalVars.defaultColour, 0.15)
+  await sleep(100);
+  squares.colour = lerpColor(squares.colour, obsticalVars.defaultColour, 0.21)
+  circles.colour = lerpColor(circles.colour, obsticalVars.defaultColour, 0.21)
 }
 
 function loadLevel(levelId) {
@@ -237,13 +246,33 @@ function loadLevel(levelId) {
   }
 }
 
-function level_test() {
+async function level_test() {
   strokeWeight(0);
   noStroke();
   obsticals();
+  textBoxesFunc();
   levelStartTimer = millis();
+  funFunFunDayo.play();
 
-  new squares.Sprite(400, 400, 50, 50)
+  await sleep(490);
+  new textBoxes.Sprite(width/2, height/4, 800, 70);
+  textBoxes.text = 'Welcome to Just Circles and Squares!';
+  await sleep(3000);
+  textBoxes.w = 1000;
+  textBoxes.text = 'This game is all about dodging these red obsticals!';
+  await sleep(175);
+  new squares.Sprite(width/4, 400, 100, 100);
+  new circles.Sprite(width - width/4, 400, 100);
+  await sleep(3000);
+  textBoxes.w = 1100;
+  textBoxes.text = "Upon touching these obsticals you'll be launched away."
+  await sleep(2000);
+  textBoxes.w = 300;
+  textBoxes.text = "Give it a try!"
+
+
+  // await sleep(1100);
+  // new squares.Sprite(400, 400, 50, 50);
 }
 
 function level_Katamari() {
@@ -279,9 +308,6 @@ function hit() {
     playerVars.hit = false;
   } 
 }
-
-
-
 
 function sleep(millisecondsDuration)
 {

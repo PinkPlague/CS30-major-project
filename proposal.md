@@ -4,12 +4,12 @@ My major project will be a movement based rhythm game, akin to Just Shapes & Bea
 
 ## Needs to have list
 
- - functioning player
- - dash
- - music
+ - functioning player [done]
+ - dash [done]
+ - music [done]
  - starting menu
  - health bar
- - dash immunity
+ - dash immunity [done]
  - music syncs to attacks
 
 ## Nice to have list
@@ -17,5 +17,5 @@ My major project will be a movement based rhythm game, akin to Just Shapes & Bea
  - pleasant menu
  - smooth animations
  - hit sound effects
- - player stretch anims
+ - player stretch anims [done]
  - 
