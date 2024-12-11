@@ -49,7 +49,7 @@ function setup() {
 
   
 
-  obsticals();
+  obstacles();
 }
 
 function draw() {
@@ -68,6 +68,16 @@ function draw() {
     movement();
     border();
     loadLevel(-1);
+    hit();
+    spawnObsticalColourChange();
+  }
+
+  else if (state === "levelLoaded 1") {
+    background(30, 5, 20);
+    playerLoad();
+    movement();
+    border();
+    loadLevel(1);
     hit();
     spawnObsticalColourChange();
   }
@@ -201,7 +211,7 @@ function playerLoad() {
     playerLoadedBool = true;
   }
 }
-function obsticals() {
+function obstacles() {
   noStroke();
   // create obsticles group
   //squares
@@ -249,7 +259,7 @@ function loadLevel(levelId) {
 async function level_test() {
   strokeWeight(0);
   noStroke();
-  obsticals();
+  obstacles();
   textBoxesFunc();
   levelStartTimer = millis();
   funFunFunDayo.play();
@@ -257,18 +267,31 @@ async function level_test() {
   await sleep(490);
   new textBoxes.Sprite(width/2, height/4, 800, 70);
   textBoxes.text = 'Welcome to Just Circles and Squares!';
+
   await sleep(3000);
   textBoxes.w = 1000;
-  textBoxes.text = 'This game is all about dodging these red obsticals!';
+  textBoxes.text = 'This game is all about dodging these red obstacles!';
+
   await sleep(175);
   new squares.Sprite(width/4, 400, 100, 100);
   new circles.Sprite(width - width/4, 400, 100);
+
   await sleep(3000);
   textBoxes.w = 1100;
-  textBoxes.text = "Upon touching these obsticals you'll be launched away."
+  textBoxes.text = "Upon touching these obstacles you'll be launched away."
+
   await sleep(2000);
   textBoxes.w = 300;
   textBoxes.text = "Give it a try!"
+
+  await sleep(1500);
+  textBoxes.w = 900;
+  textBoxes.text = "Move with (W, A, S, D)."
+
+  await sleep(30000); 
+  
+
+  
 
 
   // await sleep(1100);
@@ -276,6 +299,7 @@ async function level_test() {
 }
 
 function level_Katamari() {
+  obstacles();
   levelStartTimer = millis(); 
   katamari.play();
 
