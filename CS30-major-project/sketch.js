@@ -288,9 +288,10 @@ async function level_test() {
   textBoxes.w = 900;
   textBoxes.text = "Move with (W, A, S, D)."
 
-  await sleep(30000); 
+  await sleep(20000); 
   
-
+  circles.removeAll();
+  squares.removeAll();
   
 
 
