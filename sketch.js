@@ -285,14 +285,36 @@ async function level_test() {
   textBoxes.text = "Give it a try!"
 
   await sleep(1500);
-  textBoxes.w = 900;
+
+  textBoxes.w = 600;
   textBoxes.text = "Move with (W, A, S, D)."
 
   await sleep(20000); 
   
   circles.removeAll();
   squares.removeAll();
+
+  await sleep(200);
   
+  textBoxes.w = 700
+  textBoxes.text = 'Press space to perform a dash!'
+
+  await sleep(2000); 
+
+  textBoxes.w = 300
+  textBoxes.text = 'Neat right?'
+
+  await sleep(3000);
+
+  textBoxes.w = 950
+  textBoxes.text = 'Now try jumping back and forth over this obstacle.'
+
+  await sleep(250);
+
+
+  playerSprite.x = width/4
+  playerSprite.y = height/2
+  new squares.Sprite(width/2, height/2+120, 25, 600);
 
 
   // await sleep(1100);
