@@ -16,7 +16,7 @@ let levelStartTimer;
 function preload() {
   katamari = loadSound('assets/songfiles/femtanyl_-_KATAMARI.mp3');
   arcanoid = loadSound('assets/songfiles/Cyclone_-_Arcanoid.mp3');
-  funFunFunDayo = loadSound('assets/songfiles/Fun_Fun_Fun_dayo_-_Lucky_star.mp3');
+  funFunFunDayo = loadSound('assets/songfiles/Fun_Fun_Fun_dayo_-_Lucky_Star.mp3');
 }
 
 
