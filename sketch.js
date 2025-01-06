@@ -380,6 +380,31 @@ function sillyPrint(sillyArray) {
   }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 let cat1 = ['  ╱|-、   ',
             ' (˚ˎ。7   ',
             ' |、˜〵   ',     
