@@ -1,15 +1,13 @@
 let katamari, arcanoid;
 
-let playerSprite, squares, circles, textBoxes;
+let playerSprite, squares, circles, textBoxes, dorito;
 const PLAYER_SPEED = 5;
-let playerVars;
+let playerVars, obsticalVars, doritoVars;
 let lastDash;
 let lastHit;
 let state = "startup"
 let playerLoadedBool = false;
 let levelLoadedBool = false;
-let obsticalVars;
-
 let levelStartTimer;
 
 
@@ -47,6 +45,11 @@ function setup() {
     spawnColour: color(255, 255, 255),
   };
 
+  doritoVars = {
+    size: 30,
+    colour: color(255,255,255),
+  }
+
   sillyPrint(cat1);
   sillyPrint(cat2);
   sillyPrint(cat3);
@@ -55,7 +58,8 @@ function setup() {
   sillyPrint(cat6);
   sillyPrint(sashley);
 
-  obstacles();
+  // obstacles();
+  // doritoObj();
 }
 
 function draw() {
@@ -187,15 +191,13 @@ function border() {
 function reset() {
   squares.removeAll();
   circles.removeAll();
-  // playerSprite.removeAll();
+  playerSprite.removeAll();
 }
 function startupMenu() {
   background(30, 5, 20);
   textSize(50);
   fill(255, 0, 67)
   text("Click To Load Main Menu", width/2-300, height/2);
-
-  
 }
 function mainMenu() {
   background(30, 5, 20);
@@ -215,6 +217,7 @@ function playerLoad() {
     playerSprite.vel.x = 0;
     playerSprite.vel.y = 0;
     playerSprite.layer = 2;
+    playerSprite.overlaps(allSprites)
 
     playerLoadedBool = true;
   }
@@ -234,6 +237,18 @@ function obstacles() {
   circles.collider = "n";
   circles.friction = 0;
   circles.layer = 1;
+}
+
+function doritoObj() {
+  dorito = new Group();
+  dorito.colour = doritoVars.colour;
+  dorito.friction = 0;
+  dorito.layer = 1;
+
+
+
+  // triangle(doritoVars.side1[0], doritoVars.side1[1], doritoVars.side2[0], doritoVars.side2[1], doritoVars.side3[0], doritoVars.side3[1])
+
 }
 
 function textBoxesFunc() {
@@ -269,6 +284,7 @@ async function level_test() {
   noStroke();
   obstacles();
   textBoxesFunc();
+  doritoObj();
 
   
 
@@ -300,7 +316,7 @@ async function level_test() {
   textBoxes.w = 600;
   textBoxes.text = "Move with (W, A, S, D)."
 
-  await sleep(20000); 
+  await sleep(7000); 
   
   circles.removeAll();
   squares.removeAll();
@@ -327,9 +343,21 @@ async function level_test() {
   playerSprite.y = height/2
   new squares.Sprite(width/2, height/2+120, 25, 600);
 
+  await sleep(5000);
+
+  squares.removeAll();
+
+  textBoxes.w = 1010
+  textBoxes.text = 'Now that you know the basics, try playing a short level!'
+
+  await sleep(200);
+
+  new dorito.Sprite(width/2, height/2, doritoVars.size, 'triangle');
 
   // await sleep(1100);
   // new squares.Sprite(400, 400, 50, 50);
+
+  stop();
 }
 
 function level_Katamari() {
@@ -365,6 +393,20 @@ function hit() {
   if (millis() > lastHit + playerVars.hitCooldown) {
     playerVars.hit = false;
   } 
+
+  doritoCollide();
+}
+
+async function doritoCollide() {
+  if (playerSprite.overlaps(dorito)) {
+
+    await sleep(1000);
+
+    levelId = 0;
+    levelLoadedBool = false;
+    reset();
+    state = "mainMenu";
+  }
 }
 
 function sleep(millisecondsDuration)
