@@ -11,6 +11,7 @@ let levelLoadedBool = false;
 let levelStartTimer;
 
 
+
 function preload() {
   katamari = loadSound('assets/songfiles/femtanyl_-_KATAMARI.mp3');
   arcanoid = loadSound('assets/songfiles/Cyclone_-_Arcanoid.mp3');
@@ -191,7 +192,8 @@ function border() {
 function reset() {
   squares.removeAll();
   circles.removeAll();
-  playerSprite.delete();
+  playerSprite.remove();
+  clear();
 }
 function startupMenu() {
   background(30, 5, 20);
@@ -266,11 +268,12 @@ async function spawnObsticalColourChange() {
 }
 
 function loadLevel(levelId) {
-  if (levelId === 0) {
-    mainMenu();
-  }
+  // if (levelId === 0) {
+  //   mainMenu();
+  // }
 
-  else if (!levelLoadedBool) {
+  // else 
+  if (!levelLoadedBool) {
     background(30, 5, 20);
     if (levelId === -1) {
       level_test();
@@ -362,7 +365,9 @@ async function level_test() {
   // await sleep(1100);
   // new squares.Sprite(400, 400, 50, 50);
   
+  await sleep(2500);
 
+  funFunFunDayo.stop();
 }
 
 function level_Katamari() {
