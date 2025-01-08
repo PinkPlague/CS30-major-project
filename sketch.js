@@ -191,7 +191,7 @@ function border() {
 function reset() {
   squares.removeAll();
   circles.removeAll();
-  playerSprite.removeAll();
+  playerSprite.delete();
 }
 function startupMenu() {
   background(30, 5, 20);
@@ -266,7 +266,11 @@ async function spawnObsticalColourChange() {
 }
 
 function loadLevel(levelId) {
-  if (!levelLoadedBool) {
+  if (levelId === 0) {
+    mainMenu();
+  }
+
+  else if (!levelLoadedBool) {
     background(30, 5, 20);
     if (levelId === -1) {
       level_test();
@@ -290,6 +294,7 @@ async function level_test() {
 
   levelStartTimer = millis();
   funFunFunDayo.play();
+  // funFunFunDayo.stop();
 
   await sleep(490);
   new textBoxes.Sprite(width/2, height/4, 800, 70);
@@ -356,8 +361,8 @@ async function level_test() {
 
   // await sleep(1100);
   // new squares.Sprite(400, 400, 50, 50);
+  
 
-  stop();
 }
 
 function level_Katamari() {
@@ -397,10 +402,10 @@ function hit() {
   doritoCollide();
 }
 
-async function doritoCollide() {
+function doritoCollide() {
   if (playerSprite.overlaps(dorito)) {
 
-    await sleep(1000);
+    sleep(1000);
 
     levelId = 0;
     levelLoadedBool = false;
