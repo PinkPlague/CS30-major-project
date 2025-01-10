@@ -61,6 +61,7 @@ function setup() {
 
   // obstacles();
   // doritoObj();
+  playerLoad();
 }
 
 function draw() {
@@ -75,7 +76,6 @@ function draw() {
   }
   else if (state === "levelLoaded -1") {
     background(30, 5, 20);
-    playerLoad();
     movement();
     border();
     loadLevel(-1);
@@ -85,7 +85,6 @@ function draw() {
 
   else if (state === "levelLoaded 1") {
     background(30, 5, 20);
-    playerLoad();
     movement();
     border();
     loadLevel(1);
@@ -192,8 +191,14 @@ function border() {
 function reset() {
   squares.removeAll();
   circles.removeAll();
-  playerSprite.remove();
+  textBoxes.removeAll();
+  dorito.removeAll();
+  playerSprite.removeAll();
   clear();
+
+  background(30, 5, 20)
+
+  mainMenu();
 }
 function startupMenu() {
   background(30, 5, 20);
@@ -213,7 +218,7 @@ function playerLoad() {
   if (!playerLoadedBool) {
     noStroke();
     //create sprite
-    playerSprite = new Sprite(width/2, height/2, 30, 30);
+    playerSprite = new Group();
     playerSprite.color = playerVars.colour;
     playerSprite.rotationLock = true;
     playerSprite.vel.x = 0;
@@ -224,6 +229,7 @@ function playerLoad() {
     playerLoadedBool = true;
   }
 }
+
 function obstacles() {
   noStroke();
   // create obsticles group
@@ -277,9 +283,11 @@ function loadLevel(levelId) {
     background(30, 5, 20);
     if (levelId === -1) {
       level_test();
+      new playerSprite.Sprite(width/2, height/2, 30, 30);
     }
     if (levelId === 1) {
       level_Katamari();
+      new playerSprite.Sprite(width/2, height/2, 30, 30);
     }
 
     levelLoadedBool = true;
