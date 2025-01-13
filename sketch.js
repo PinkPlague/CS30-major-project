@@ -13,15 +13,18 @@ let levelStartTimer;
 
 
 function preload() {
+  // Preloading all songs //
   katamari = loadSound('assets/songfiles/femtanyl_-_KATAMARI.mp3');
   arcanoid = loadSound('assets/songfiles/Cyclone_-_Arcanoid.mp3');
   funFunFunDayo = loadSound('assets/songfiles/Fun_Fun_Fun_dayo_-_Lucky_Star.mp3');
+  electromanAdventuresV2 = loadSound('assets/songfiles/Electroman_Adventures_V2.mp3');
 }
-
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
+
+  // Player Variables //
   playerVars = {
     lives: 5,
     speed: PLAYER_SPEED,
@@ -41,39 +44,54 @@ function setup() {
     colour: color(0, 254, 255),
   };
 
+  // Obstacle Variables //
   obsticalVars = {
     defaultColour: color(252, 31, 109),
     spawnColour: color(255, 255, 255),
   };
 
+  // End Trigger Variables //
   doritoVars = {
     size: 30,
     colour: color(255,255,255),
   }
 
-  sillyPrint(cat1);
-  sillyPrint(cat2);
-  sillyPrint(cat3);
-  sillyPrint(cat4);
-  sillyPrint(cat5);
-  sillyPrint(cat6);
+
+  // Misc //
+  for (let i = 1; i < 7; i++) {
+    sillyPrint(cat1);
+    sillyPrint(cat2);
+    sillyPrint(cat3);
+    sillyPrint(cat4);
+    sillyPrint(cat5);
+    sillyPrint(cat6);
+  }
   sillyPrint(sashley);
 
-  // obstacles();
-  // doritoObj();
+
+  // Preload Player //
   playerLoad();
 }
 
 function draw() {
-
   rectMode(CENTER);
 
+  // // // Menu States // // //
+
+  // Start Up State // 
   if (state === "startup") {
     startupMenu();
   }
+
+  // Main Menu State //
   else if (state === "mainMenu") {
     mainMenu();
   }
+  // // // /////////// // // //
+
+  // // // Level Loading // // //
+
+  // Tutorial Level //
   else if (state === "levelLoaded -1") {
     background(30, 5, 20);
     movement();
@@ -83,7 +101,8 @@ function draw() {
     spawnObsticalColourChange();
   }
 
-  else if (state === "levelLoaded 1") {
+  // First Level //
+  else if (state === "levelLoaded 2") {
     background(30, 5, 20);
     movement();
     border();
@@ -91,12 +110,12 @@ function draw() {
     hit();
     spawnObsticalColourChange();
   }
-  
-  
-  
-  
+  // // // ///////////// // // //
 }
 
+
+
+// // // Mouse Detection // // //
 function mousePressed() {
   if (state === "startup") {
     state = "mainMenu"
@@ -107,38 +126,38 @@ function mousePressed() {
     }
   }
 } 
+// // // /////////////// // // //
 
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
-}
 
+
+// // // Player Movement // // //
 function movement() {
   // movement
-	if (kb.pressing("right")&&!playerVars.hit) {
+  if (kb.pressing("right")&&!playerVars.hit) {
   playerSprite.vel.x = playerVars.speed;
-	playerSprite.vel.y = 0;
+  playerSprite.vel.y = 0;
   playerSprite.height = playerVars.stretchedMin;
   playerSprite.bearing = 'right';
   } 
-	if (kb.pressing("left")&&!playerVars.hit) {
+  if (kb.pressing("left")&&!playerVars.hit) {
   playerSprite.vel.x = -playerVars.speed;
-	playerSprite.vel.y = 0;
+  playerSprite.vel.y = 0;
   playerSprite.height = playerVars.stretchedMin;
   playerSprite.bearing = 'left';
   }
-	if (kb.pressing("up")&&!playerVars.hit) {
+  if (kb.pressing("up")&&!playerVars.hit) {
   playerSprite.vel.y = -playerVars.speed;
   playerSprite.width = playerVars.stretchedMin;
   playerSprite.bearing = 'up';
   } 
-	if (kb.pressing("down")&&!playerVars.hit) {
+  if (kb.pressing("down")&&!playerVars.hit) {
   playerSprite.vel.y = playerVars.speed;
   playerSprite.width = playerVars.stretchedMin;
   playerSprite.bearing = 'down';
   } 
-	if (!kb.pressing("right")&&!kb.pressing("left")&&!kb.pressing("down")&&!kb.pressing("up")) {
-	playerSprite.vel.x = 0;
-	playerSprite.vel.y = 0;
+  if (!kb.pressing("right")&&!kb.pressing("left")&&!kb.pressing("down")&&!kb.pressing("up")) {
+  playerSprite.vel.x = 0;
+  playerSprite.vel.y = 0;
 
   playerSprite.height = playerVars.nonStretched;
   playerSprite.width = playerVars.nonStretched;
@@ -148,10 +167,10 @@ function movement() {
   playerSprite.vel.y = 0;
   }
   if (kb.pressing("right")&&kb.pressing("left")) {
-	playerSprite.vel.x = 0;
+  playerSprite.vel.x = 0;
   }
   if (kb.pressing("up")&&kb.pressing("down")) {
-	playerSprite.vel.y = 0;
+  playerSprite.vel.y = 0;
   }
 
   //DASH
@@ -162,14 +181,21 @@ function movement() {
   playerVars.invincible = true;
   playerVars.isDashing = true;
   }
-	}
+  }
   if (millis() > lastDash + playerVars.dashCooldown) {
   playerVars.speed = PLAYER_SPEED;
   playerVars.invincible = false;
   playerVars.isDashing = false;
   } 
 }
+// // // /////////////// // // //
 
+
+
+// // // Window Managment // // //
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
 function border() {
   if (playerSprite.x < 15) {
     playerSprite.x = 15;
@@ -187,7 +213,12 @@ function border() {
     playerSprite.y = height-15;
     }
 }
+// // // //////////////// // // //
 
+
+
+// // // Menu Managment // // //
+// resets to main menu //
 function reset() {
   squares.removeAll();
   circles.removeAll();
@@ -200,12 +231,14 @@ function reset() {
 
   mainMenu();
 }
+// loads the launch menu //
 function startupMenu() {
   background(30, 5, 20);
   textSize(50);
   fill(255, 0, 67)
   text("Click To Load Main Menu", width/2-300, height/2);
 }
+// loads main menu //
 function mainMenu() {
   background(30, 5, 20);
   fill(83, 4, 28)
@@ -214,6 +247,12 @@ function mainMenu() {
   rect(width/2,height/3*2, 200, 50, 50)
 
 }
+// // // ////////////// // // //
+
+
+
+// // // // Object managment // // // //
+// player loading //
 function playerLoad() {
   if (!playerLoadedBool) {
     noStroke();
@@ -229,7 +268,7 @@ function playerLoad() {
     playerLoadedBool = true;
   }
 }
-
+// obstacle loading //
 function obstacles() {
   noStroke();
   // create obsticles group
@@ -246,7 +285,7 @@ function obstacles() {
   circles.friction = 0;
   circles.layer = 1;
 }
-
+// end trigger loading //
 function doritoObj() {
   dorito = new Group();
   dorito.colour = doritoVars.colour;
@@ -258,7 +297,7 @@ function doritoObj() {
   // triangle(doritoVars.side1[0], doritoVars.side1[1], doritoVars.side2[0], doritoVars.side2[1], doritoVars.side3[0], doritoVars.side3[1])
 
 }
-
+// tutorial text box loading //
 function textBoxesFunc() {
   textBoxes = new Group();
   textBoxes.colour = color(252, 31, 109);
@@ -266,19 +305,18 @@ function textBoxesFunc() {
   textBoxes.textSize = 40;
   textBoxes.collider = 'none';
 }
-
+// object spawn colour //
 async function spawnObsticalColourChange() {
   await sleep(100);
   squares.colour = lerpColor(squares.colour, obsticalVars.defaultColour, 0.21)
   circles.colour = lerpColor(circles.colour, obsticalVars.defaultColour, 0.21)
 }
+// // // // //////////////// // // // //
 
+
+
+// // // Level Managment // // //
 function loadLevel(levelId) {
-  // if (levelId === 0) {
-  //   mainMenu();
-  // }
-
-  // else 
   if (!levelLoadedBool) {
     background(30, 5, 20);
     if (levelId === -1) {
@@ -289,11 +327,19 @@ function loadLevel(levelId) {
       level_Katamari();
       new playerSprite.Sprite(width/2, height/2, 30, 30);
     }
+    if (levelId === 2) {
+      level_Electroman_Adventures_V2();
+      new playerSprite.Sprite(width/2, height/2, 30, 30);
+    }
 
     levelLoadedBool = true;
   }
 }
+// // // /////////////// // // //
 
+
+
+// // // Levels // // //
 async function level_test() {
   strokeWeight(0);
   noStroke();
@@ -370,21 +416,46 @@ async function level_test() {
 
   new dorito.Sprite(width/2, height/2, doritoVars.size, 'triangle');
 
-  // await sleep(1100);
-  // new squares.Sprite(400, 400, 50, 50);
-  
   await sleep(2500);
 
   funFunFunDayo.stop();
 }
+async function level_Electroman_Adventures_V2() {
+  strokeWeight(0);
+  noStroke();
+  obstacles();
+  textBoxesFunc();
+  doritoObj();
 
+  await sleep(150);
+
+  levelStartTimer = millis();
+  electromanAdventuresV2.play();
+
+  new circles.Sprite(width/8, height/6, 100)
+
+
+
+
+  // ending squence
+  new dorito.Sprite(width/2, height/2, doritoVars.size, 'triangle');
+
+  await sleep(2500);
+
+  electromanAdventuresV2.stop();
+}
 function level_Katamari() {
   obstacles();
   levelStartTimer = millis(); 
   katamari.play();
 
 }
+// // // ////// // // //
 
+
+
+// // // Collision Detection // // //
+// hit detection //
 function hit() {
   if (!playerVars.invincible&&(playerSprite.overlaps(squares)||playerSprite.overlaps(circles))) {
     playerVars.lives--;
@@ -414,7 +485,7 @@ function hit() {
 
   doritoCollide();
 }
-
+// end trigger detection
 function doritoCollide() {
   if (playerSprite.overlaps(dorito)) {
 
@@ -426,44 +497,29 @@ function doritoCollide() {
     state = "mainMenu";
   }
 }
+// // // /////////////////// // // //
 
+
+
+// // Delay Managment // // //
 function sleep(millisecondsDuration)
 {
   return new Promise((resolve) => {
     setTimeout(resolve, millisecondsDuration);
   })
 }
+// // /////////////// // // //
 
+
+
+
+
+//////// //////// //////// //////// //////// MISC //////// //////// //////// //////// //////// 
 function sillyPrint(sillyArray) {
   for (let line of sillyArray) {
     console.log(line);
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 let cat1 = ['  ╱|-、   ',
             ' (˚ˎ。7   ',
@@ -520,4 +576,4 @@ let cat6 = [' _,,/| ',
             ' /   \\ (\\ ',
             '(////_)// ',
             ' ~~~ ']
-
+//////// //////// //////// //////// //////// MISC //////// //////// //////// //////// //////// 
