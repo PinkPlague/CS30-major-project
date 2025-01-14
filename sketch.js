@@ -1,15 +1,23 @@
-let katamari, arcanoid;
+let logo;
+
 
 let playerSprite, squares, circles, textBoxes, dorito;
+
+
 const PLAYER_SPEED = 5;
 let playerVars, obsticalVars, doritoVars;
 let lastDash;
 let lastHit;
+
+
 let state = "startup"
+
+
 let playerLoadedBool = false;
 let levelLoadedBool = false;
-let levelStartTimer;
 
+
+let levelStartTimer;
 
 
 function preload() {
@@ -18,6 +26,8 @@ function preload() {
   arcanoid = loadSound('assets/songfiles/Cyclone_-_Arcanoid.mp3');
   funFunFunDayo = loadSound('assets/songfiles/Fun_Fun_Fun_dayo_-_Lucky_Star.mp3');
   electromanAdventuresV2 = loadSound('assets/songfiles/Electroman_Adventures_V2.mp3');
+  // preload images
+  logo = loadImage('assets/images/logo.png')
 }
 
 function setup() {
@@ -71,10 +81,13 @@ function setup() {
 
   // Preload Player //
   playerLoad();
+  // Preload text boxes
+  textBoxesFunc();
 }
 
 function draw() {
   rectMode(CENTER);
+  textAlign(CENTER);
 
   // // // Menu States // // //
 
@@ -99,6 +112,7 @@ function draw() {
     loadLevel(-1);
     hit();
     spawnObsticalColourChange();
+    healthBar(playerVars.lives, playerVars.colour);
   }
 
   // First Level //
@@ -109,6 +123,7 @@ function draw() {
     loadLevel(1);
     hit();
     spawnObsticalColourChange();
+    healthBar(playerVars.lives, playerVars.colour);
   }
   // // // ///////////// // // //
 }
@@ -130,7 +145,7 @@ function mousePressed() {
 
 
 
-// // // Player Movement // // //
+// // // Player Management // // //
 function movement() {
   // movement
   if (kb.pressing("right")&&!playerVars.hit) {
@@ -188,6 +203,12 @@ function movement() {
   playerVars.isDashing = false;
   } 
 }
+function healthBar(healthVar, colourVar) {
+  proportion = healthVar*50
+
+  fill(colourVar);
+  rect(width/2, height/15, proportion, 40);
+}
 // // // /////////////// // // //
 
 
@@ -236,7 +257,7 @@ function startupMenu() {
   background(30, 5, 20);
   textSize(50);
   fill(255, 0, 67)
-  text("Click To Load Main Menu", width/2-300, height/2);
+  text("Click To Load Main Menu", width/2, height/2);
 }
 // loads main menu //
 function mainMenu() {
@@ -245,6 +266,9 @@ function mainMenu() {
   stroke(255, 0, 85)
   strokeWeight(10)
   rect(width/2,height/3*2, 200, 50, 50)
+  strokeWeight(6);
+  text('Press to load the Tutorial',width/2,height/3*2-40);
+  image(logo, width/6, height/6)
 
 }
 // // // ////////////// // // //
@@ -311,6 +335,12 @@ async function spawnObsticalColourChange() {
   squares.colour = lerpColor(squares.colour, obsticalVars.defaultColour, 0.21)
   circles.colour = lerpColor(circles.colour, obsticalVars.defaultColour, 0.21)
 }
+// load all
+function loadAllObjects() {
+  obstacles();
+  doritoObj();
+  textBoxesFunc();
+}
 // // // // //////////////// // // // //
 
 
@@ -343,9 +373,7 @@ function loadLevel(levelId) {
 async function level_test() {
   strokeWeight(0);
   noStroke();
-  obstacles();
-  textBoxesFunc();
-  doritoObj();
+  loadAllObjects();
 
   
 
@@ -423,9 +451,7 @@ async function level_test() {
 async function level_Electroman_Adventures_V2() {
   strokeWeight(0);
   noStroke();
-  obstacles();
-  textBoxesFunc();
-  doritoObj();
+  loadAllObjects();
 
   await sleep(150);
 
@@ -445,7 +471,11 @@ async function level_Electroman_Adventures_V2() {
   electromanAdventuresV2.stop();
 }
 function level_Katamari() {
-  obstacles();
+  strokeWeight(0);
+  noStroke();
+  loadAllObjects();
+
+
   levelStartTimer = millis(); 
   katamari.play();
 
