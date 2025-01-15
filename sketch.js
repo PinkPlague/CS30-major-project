@@ -204,10 +204,12 @@ function movement() {
   } 
 }
 function healthBar(healthVar, colourVar) {
-  proportion = healthVar*50
+  if (healthVar > 0) {
+    proportion = healthVar*50
 
-  fill(colourVar);
-  rect(width/2, height/15, proportion, 40);
+    fill(colourVar);
+    rect(width/2, height/15, proportion, 40);
+  }
 }
 // // // /////////////// // // //
 
@@ -218,21 +220,23 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
 function border() {
-  if (playerSprite.x < 15) {
-    playerSprite.x = 15;
-    }
+  for (let player of playerSprite) {
+    if (player.x < 15) {
+      player.x = 15;
+      }
+      
+      if (player.x > width-15) {
+      player.x = width-15;
+      }
+      
+      if (player.y < 15){
+      player.y = 15;
+      }
     
-    if (playerSprite.x > width-15) {
-    playerSprite.x = width-15;
-    }
-    
-    if (playerSprite.y < 15){
-    playerSprite.y = 15;
-    }
-  
-    if (playerSprite.y > height-15){
-    playerSprite.y = height-15;
-    }
+      if (player.y > height-15){
+      player.y = height-15;
+      }
+  }
 }
 // // // //////////////// // // //
 
@@ -267,7 +271,8 @@ function mainMenu() {
   strokeWeight(10)
   rect(width/2,height/3*2, 200, 50, 50)
   strokeWeight(6);
-  text('Press to load the Tutorial',width/2,height/3*2-40);
+  textSize(60)
+  text('Press to load the Tutorial',width/2,height/3*2-60);
   image(logo, width/6, height/6)
 
 }
