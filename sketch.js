@@ -436,6 +436,7 @@ async function level_test() {
 
   playerSprite.x = width/4
   playerSprite.y = height/2
+  playerSprite.moveTo(width/4,height/2, 20);
   new squares.Sprite(width/2, height/2+120, 25, 600);
 
   await sleep(5000);
