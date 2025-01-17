@@ -400,16 +400,16 @@ async function level_test() {
 
   await sleep(3000);
   textBoxes.w = 1100;
-  textBoxes.text = "Upon touching these obstacles you'll be launched away."
+  textBoxes.text = "Upon touching these obstacles you'll be launched away.";
 
   await sleep(2000);
   textBoxes.w = 300;
-  textBoxes.text = "Give it a try!"
+  textBoxes.text = "Give it a try!";
 
   await sleep(1500);
 
   textBoxes.w = 600;
-  textBoxes.text = "Move with (W, A, S, D)."
+  textBoxes.text = "Move with (W, A, S, D).";
 
   await sleep(7000); 
   
@@ -418,24 +418,24 @@ async function level_test() {
 
   await sleep(200);
   
-  textBoxes.w = 700
-  textBoxes.text = 'Press space to perform a dash!'
+  textBoxes.w = 700;
+  textBoxes.text = 'Press space to perform a dash!';
 
   await sleep(2000); 
 
-  textBoxes.w = 300
-  textBoxes.text = 'Neat right?'
+  textBoxes.w = 300;
+  textBoxes.text = 'Neat right?';
 
   await sleep(3000);
 
-  textBoxes.w = 950
-  textBoxes.text = 'Now try jumping back and forth over this obstacle.'
+  textBoxes.w = 950;
+  textBoxes.text = 'Now try jumping back and forth over this obstacle.';
 
   await sleep(250);
 
 
-  playerSprite.x = width/4
-  playerSprite.y = height/2
+  playerSprite.x = width/4;
+  playerSprite.y = height/2;
   playerSprite.moveTo(width/4,height/2, 20);
   new squares.Sprite(width/2, height/2+120, 25, 600);
 
@@ -443,8 +443,8 @@ async function level_test() {
 
   squares.removeAll();
 
-  textBoxes.w = 1010
-  textBoxes.text = 'Now that you know the basics, try playing a short level!'
+  textBoxes.w = 1010;
+  textBoxes.text = 'Now that you know the basics, try playing a short level!';
 
   await sleep(200);
 
@@ -604,12 +604,14 @@ let sashley = [ '⡇                                       ⣀⡀               
                 '⡇                ⠈⣿ ⣠⡿⢶⣤⣍⣓⠒⠦⠤⡀ ⣾⡟⢿⣦   ⢸⣿ ⠈⠻⣿⣧             ⢰⡆ ⢀⡈⠛⢿⣷⡀    ',
                 '⡇                ⢀⣿⣾⠟⠁ ⠈⠉⠛⠛⠛⠳⡆⢸⣿⠁ ⣿⡇  ⠘⠃  ⢀⡞⣿⣧                ⠘⠁  ⠹⣿⣦   ',
                 '⡇                ⠈⢻⡟⠛⠷⣦ ⢀⣀⣤⣀⣠⣧⢸⣿⢦⣀⠈     ⢀⡤⠞⠁⠸⣿⡆         ⠘⠟  ⠸⠇    ⠈⣿⣧  ',
-                '⡇                 ⢸⣷  ⢹⡶⠟⢻⣍⠉⠿⠟⠘⣿⡄⠈⠉⠒⠒⠒⠒⠉⠁    ⣿⣧     ⣀⣠⠤⠤⠤⠤⠤⣄⡀     ⠘⣿  ']
+                '⡇                 ⢸⣷  ⢹⡶⠟⢻⣍⠉⠿⠟⠘⣿⡄⠈⠉⠒⠒⠒⠒⠉⠁    ⣿⣧     ⣀⣠⠤⠤⠤⠤⠤⣄⡀     ⠘⣿  '];
 
 let cat6 = [' _,,/| ',
             " \\o o' ",
             ' =_~_= ',
             ' /   \\ (\\ ',
             '(////_)// ',
-            ' ~~~ ']
+            ' ~~~ '];
+
+
 //////// //////// //////// //////// //////// MISC //////// //////// //////// //////// //////// 
